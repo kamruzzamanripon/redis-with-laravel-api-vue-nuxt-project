@@ -3,15 +3,35 @@
 namespace App\Listeners;
 
 use App\Events\ProductUpdatedEvent;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Redis;
 
-class ProductUpdatedListener
-{
-    public function handle(ProductUpdatedEvent $event)
-    {
-        Cache::forget('products_frontend');
-        Cache::forget('products_backend');
+class ProductUpdatedListener {
+    public function handle( ProductUpdatedEvent $event ) {
+        // Clear frontend and backend caches
+        Cache::forget( 'products_frontend' );
+        Cache::forget( 'products_backend' );
+
+        // Clear all cached pages (if using Redis)
+        $this->clearPaginatedCache();
     }
+    
+    private function clearPaginatedCache(): void {
+        for ($page = 1; $page <= 1000; $page++) {
+            $prefix = "products_backend_pagination_page_";
+            $key = $prefix . $page;
+            if (Cache::has($key)) {
+                Cache::forget($key);
+                Log::info('Cleared Cache for page:', ["products_backend_pagination_page_{$page}"]);
+            } else {
+                Log::info('Cleared Cache for break:', ["products_backend_pagination_page_{$page}"]);
+                break;
+            }
+           // Cache::forget("products_backend_pagination_page_{$page}");
+            
+        }
+    }
+    
+    
 }

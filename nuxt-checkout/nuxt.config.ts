@@ -19,23 +19,16 @@ export default defineNuxtConfig({
 
   plugins: ['~/plugins/axios.js'],
   ssr:true,
-  modules: ['@unlok-co/nuxt-stripe'],
+  modules: [
+    '@sandros94/nuxt-stripe'
+  ],
   stripe: {
-    // Server
-    server: {
-      key: process.env.STRIPE_SECRET_KEY,
-      options: {
-        // your api options override for stripe server side
-        // https://github.com/stripe/stripe-node?tab=readme-ov-file#configuration
-      },
-      // CLIENT
-    },
-    client: {
-      key: process.env.STRIPE_PUBLIC_KEY,
-      // manualClientLoad: true, // if you want to have control where you are going to load the client
-      // your api options override for stripe client side https://stripe.com/docs/js/initializing#init_stripe_js-options
-      options: {},
-    },
-  },
+    publishableKey: 'pk_test_51LHvgpCpHBofOJFTPf5PvQrnc6BTDdkAXvBNGJCbuCOe35hdyMAPjCLB1xOvyEQYJTwXIhcH2NocXVBkupzThKiq00dPtGXCdh', // required
+    clientOptions: {
+      apiVersion: '2022-11-15', // optional, default is '2022-11-15'
+      /** other stripe-js options */
+    }
+    
+  }
   
 })

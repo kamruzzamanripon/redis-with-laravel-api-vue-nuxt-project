@@ -145,6 +145,7 @@ const goBack = () => router.back();
 // Checkout function
 const checkout = async () => {
     //const stripe = await ClientStripeOptions();
+    const stripe = await useClientStripe()
     const { data } = await $axios.post('orders', {
         ...user,
         code: route.params.code,
@@ -153,10 +154,11 @@ const checkout = async () => {
             quantity: quantities[product.id],
         })),
     });
-
-    console.log('checkout', data)
+    console.log('checkout-1')
+    
     // Redirect to Stripe checkout
    // await $nuxtApp.$stripe?.redirectToCheckout({ sessionId: data.id });
-   //await stripe.redirectToCheckout({ sessionId: data.id });
+   await stripe.redirectToCheckout({ sessionId: data.id });
+   console.log('checkout-2', data)
 };
 </script>

@@ -50,6 +50,7 @@ Route::prefix('ambassador')->group(function () {
 
     Route::get('products/frontend', [ProductController::class, 'frontend']);
     Route::get('products/backend', [ProductController::class, 'backend']);
+    Route::get('products/backend-with-pagination', [ProductController::class, 'backendWithPagination']);
 
     Route::middleware(['auth:sanctum', 'scope.ambassador'])->group(function () {
         Route::post('links', [LinkController::class, 'store']);
