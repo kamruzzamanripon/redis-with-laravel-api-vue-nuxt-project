@@ -14,12 +14,11 @@ class ProductUpdatedListener {
         Cache::forget( 'products_backend' );
 
         // Clear all cached pages (if using Redis)
-        $this->clearPaginatedCache();
+        $this->clearPaginatedCache($prefix = "products_backend_pagination_page_");
     }
     
-    private function clearPaginatedCache(): void {
+    private function clearPaginatedCache($prefix): void {
         for ($page = 1; $page <= 1000; $page++) {
-            $prefix = "products_backend_pagination_page_";
             $key = $prefix . $page;
             if (Cache::has($key)) {
                 Cache::forget($key);

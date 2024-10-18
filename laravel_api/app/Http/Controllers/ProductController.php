@@ -6,6 +6,7 @@ use App\Events\ProductUpdatedEvent;
 use App\Models\Product;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
@@ -121,10 +122,10 @@ class ProductController extends Controller {
         //dd($cachedProducts);
     
         /** @var \Illuminate\Contracts\Pagination\LengthAwarePaginator $products */
-        $products = Cache::remember($cacheKey, 30 * 60, function () use ($page, $cacheKey) {
-            sleep(10); // Simulate delay
+        $products = Cache::remember($cacheKey, 30 * 60, function () use ($page, $cacheKey): LengthAwarePaginator {
+            //sleep(10); // Simulate delay
             $products = Product::paginate(9, ['*'], 'page', $page);
-            Log::info('Caching products for page:', ['key' => $cacheKey]); // Log the caching event
+            Log::info('Caching products for page:', ['key' => $cacheKey]); 
             return $products;
         });
     
